@@ -1,0 +1,26 @@
+version: "3.9"
+
+volumes:
+  postgres-data:
+
+networks:
+  local-bridge:
+    external: true
+
+services:
+  postgres:
+    image: postgres:12
+    container_name: postgres
+    hostname: postgres
+    restart: "no"
+    networks:
+      local-bridge:
+        ipv4_address: 192.168.2.2
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      # - ../path/to/folder/:/tmp/path/to/folder
+      - ./init:/docker-entrypoint-initdb.d/
+      - postgres-data:/var/lib/postgresql

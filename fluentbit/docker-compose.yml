@@ -1,0 +1,21 @@
+version: "3.9"
+
+networks:
+  local-bridge:
+    external: true
+
+services:
+  fluent-bit:
+    image: fluent/fluent-bit
+    container_name: fluentbit
+    hostname: fluentbit
+    restart: "no"
+    volumes:
+      - ./fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+    networks:
+      local-bridge:
+        ipv4_address: 192.168.2.7
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+      - "5170:5170"

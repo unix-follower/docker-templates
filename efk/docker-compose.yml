@@ -1,0 +1,54 @@
+version: "3.9"
+
+networks:
+  local-bridge:
+    external: true
+
+volumes:
+  data:
+#    driver: local
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.3
+    container_name: elasticsearch
+    hostname: elasticsearch
+    restart: "no"
+    environment:
+      - node.name=elasticsearch
+      # - cluster.name=es-docker-cluster
+      # - discovery.seed_hosts=elasticsearch
+      - discovery.type=single-node
+      # - cluster.initial_master_nodes=elasticsearch
+      # - bootstrap.memory_lock=true
+      # - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - ELASTIC_PASSWORD=elastic
+      - xpack.security.enabled=true
+    # ulimits:
+    #   memlock:
+    #     soft: -1
+    #     hard: -1
+    volumes:
+      - data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      local-bridge:
+        ipv4_address: 192.168.2.8
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.16.3
+    container_name: kibana
+    hostname: kibana
+    restart: "no"
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      ELASTICSEARCH_USERNAME: elastic
+      ELASTICSEARCH_PASSWORD: elastic
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      local-bridge:
+        ipv4_address: 192.168.2.9

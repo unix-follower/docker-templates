@@ -1,0 +1,23 @@
+version: "3.9"
+
+volumes:
+  prometheus-data:
+
+networks:
+  local_local-network:
+    external: true
+
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    hostname: prometheus
+    restart: "no"
+    ports:
+      - "9090:9090"
+    networks:
+      local_local-network:
+        ipv4_address: 192.168.2.8
+    volumes:
+      - prometheus-data:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml

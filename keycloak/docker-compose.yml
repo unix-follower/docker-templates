@@ -1,0 +1,31 @@
+version: "3.9"
+
+networks:
+  local-bridge:
+    external: true
+
+services:
+  keycloak:
+    # image: quay.io/keycloak/keycloak:latest
+    image: quay.io/keycloak/keycloak:16.1.1
+    restart: "no"
+    container_name: keycloak
+    hostname: keycloak
+    ports:
+      - "8080:8080"
+    networks:
+      local-bridge:
+        ipv4_address: 192.168.2.5
+    # volumes:
+      # - ./imports:/opt/jboss/keycloak/imports
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres:5432
+      DB_USER: ${KEYCLOAK_DB_USER}
+      DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      DB_DATABASE: keycloak
+      DB_SCHEMA: public
+      KEYCLOAK_USER: ${KEYCLOAK_USER}
+      KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
+      # KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json
+      # JAVA_OPTS: "-Dkeycloak.profile.feature.scripts=enabled -Dkeycloak.profile.feature.upload_scripts=enabled -server -Xms64m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true"

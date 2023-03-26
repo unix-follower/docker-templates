@@ -1,0 +1,22 @@
+version: "3.9"
+
+volumes:
+  data:
+
+networks:
+  local-bridge:
+    external: true
+
+services:
+  mysql:
+    image: mysql
+    container_name: mysql
+    hostname: mysql
+    restart: "no"
+    networks:
+      local-bridge:
+        ipv4_address: 192.168.2.10
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}

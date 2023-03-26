@@ -1,0 +1,23 @@
+version: "3.9"
+
+volumes:
+  data:
+
+networks:
+  local-bridge:
+    external: true
+
+services:
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    hostname: grafana
+    restart: "no"
+    ports:
+      - "5000:5000"
+    networks:
+      local-bridge:
+        ipv4_address: 192.168.2.9
+    volumes:
+      - data:/var/lib/grafana
+      - ./grafana.ini:/etc/grafana/grafana.ini
