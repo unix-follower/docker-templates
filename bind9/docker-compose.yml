@@ -1,0 +1,27 @@
+volumes:
+  data:
+
+networks:
+  local-bridge:
+    external: true
+
+services:
+  bind9:
+    image: ubuntu/bind9
+    container_name: bind9
+    hostname: bind9
+    restart: "no"
+    ports:
+      - "2053:53/udp"
+    networks:
+      local-bridge:
+        ipv4_address: 192.168.2.1
+    volumes:
+      - ./resolv.conf:/etc/resolv.conf
+      - ./named.conf.local:/etc/bind/named.conf.local
+      - ./named.conf.options:/etc/bind/named.conf.options
+      - ./example/example.org:/etc/bind/example.org
+      - ./example/example.org.reverse:/etc/bind/example.org.reverse
+    environment:
+      TZ: UTC
+      BIND9_USER: ${BIND9_USER}

@@ -1,0 +1,11 @@
+zone "example.org" {
+  type master;
+  file "/etc/bind/example.org";
+};
+
+zone "1.168.192.in-addr.arpa" {
+  type master;
+  notify no;
+  file "/etc/bind/example.org.reverse";
+};
+
