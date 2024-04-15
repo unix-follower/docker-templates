@@ -1,0 +1,15 @@
+networks:
+  local-bridge:
+    external: true
+
+services:
+  nginx:
+    image: nginx
+    container_name: nginx
+    hostname: nginx
+    restart: "no"
+    ports:
+      - "80:80"
+    networks:
+      local-bridge:
+        ipv4_address: 192.168.2.1
