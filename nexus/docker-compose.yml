@@ -1,0 +1,19 @@
+volumes:
+  data:
+
+networks:
+  local-bridge:
+    external: true
+
+services:
+  nexus:
+    image: sonatype/nexus3:latest
+    container_name: nexus
+    hostname: nexus
+    restart: "no"
+    ports:
+      - "8000:8081"
+    networks:
+      local-bridge:
+    volumes:
+      - data:/var/lib/nexus
